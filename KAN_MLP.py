@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from KAN.KAN import KAN_layer
-from Splines.BSplineActivation import BSplineActivation
+from KAN.Splines.BSplineActivation import BSplineActivation
 
 class KAN_MLP_layer(nn.Sequential):
    def __init__(self, 
