@@ -52,7 +52,6 @@ class KAN(nn.Module):
     self.out_layer = KAN_layer(in_features = hidden_states[-1], out_features = out_features)
   
   def forward(self, X):
-    X = X["x"].to("cuda")
     X = self.in_layer(X)
     if self.hidden_layers:
       X = self.hidden_layers(X)
