@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from Splines.BSplineActivation import BSplineActivation
+from KAN.Splines.BSplineActivation import BSplineActivation
 
 class KAN_layer(nn.Module):
   def __init__(self, 
@@ -14,7 +14,8 @@ class KAN_layer(nn.Module):
     # SiLU:
     self.SiLU = nn.SiLU()
     # Functions
-    self.edges = nn.ModuleList([BSplineActivation(num_activations=1, grid = grid_size, mode="linear", device="cuda") for i in range(out_features)])
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    self.edges = nn.ModuleList([BSplineActivation(num_activations=1, grid = grid_size, mode="linear", device=device) for i in range(out_features)])
     # Weights
     self.linears = nn.ModuleList([nn.Linear(in_features = 2, out_features=1) for i in range(out_features)])
 
