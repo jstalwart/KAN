@@ -17,11 +17,14 @@ class biKAN_layer(nn.Module):
 
 
     def from_pretrained(self,
-                        upper_path : str,
-                        lower_path : str,
+                        upper_path : str = None,
+                        lower_path : str = None,
                         **kwargs):
-        self.upper.load_state_dict(torch.load(upper_path))
-        self.lower.load_state_dict(torch.load(lower_path))
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        if upper_path != None:
+            self.upper.load_state_dict(torch.load(upper_path, map_location=torch.device(device)))
+        if lower_path != None:
+            self.lower.load_state_dict(torch.load(lower_path, map_location=torch.device(device)))
 
     def forward(self, x):
         x1 = self.upper(x)
