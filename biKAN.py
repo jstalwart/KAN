@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from KAN.KAN import KAN_layer
+from KAN.KAN import KAN_layer, KAN
 
 class biKAN_layer(nn.Module):
     def __init__(self,
@@ -31,4 +31,21 @@ class biKAN_layer(nn.Module):
         x1 = self.drop_up(x1)
         x2 = self.lower(x)
         x2 = self.drop_bot(x2)
+        return torch.mul(x1, x2)
+    
+class biKAN(nn.Module):
+    def __init__(self,
+                 kan : KAN,
+                 p : float = .5,
+                 **kwargs
+                 ):
+        super().__init__()
+        self.original = kan
+        self.drop_up = nn.Dropout(p)
+        self.drop_bot = nn.Dropout(p)
+
+    def forward(self, x):
+        x1 = self.original(x)
+        x1 = self.drop_up(x)
+        x2 = self.drop_bot(x)
         return torch.mul(x1, x2)
