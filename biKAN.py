@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
-from KAN.KAN import KAN_layer, KAN
+from KAN.KAN import KAN_layer
+from KAN.KAN import KAN
 
 class biKAN_layer(nn.Module):
     def __init__(self,
