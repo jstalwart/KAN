@@ -46,7 +46,7 @@ class biKAN(nn.Module):
         self.drop_bot = nn.Dropout(p)
 
     def forward(self, x):
-        x1 = self.original(x)
+        x = self.original(x)
         x1 = self.drop_up(x)
         x2 = self.drop_bot(x)
         return torch.mul(x1, x2)
