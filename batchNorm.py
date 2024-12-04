@@ -14,7 +14,7 @@ class KAN_norm(nn.Module):
       self.hidden_layers = nn.Sequential()
       for i in range(len(hidden_states)-1):
         self.hidden_layers.append(nn.BatchNorm1d(hidden_states[i]))
-        KAN_layer(in_features = hidden_states[i], out_features = hidden_states[i+1], **kwargs)
+        self.hidden_layers.append(KAN_layer(in_features = hidden_states[i], out_features = hidden_states[i+1], **kwargs))
     else:
       self.hidden_layers = False
     self.out_layer = nn.Sequential(nn.BatchNorm1d(hidden_states[-1]),
