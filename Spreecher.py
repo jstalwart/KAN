@@ -21,9 +21,11 @@ class Spreecher(nn.Module):
         self.alfa = aux * torch.ones((output_size, input_size))
         self.alfa = self.alfa.T
         self.alfa = self.alfa.reshape((1,)+self.alfa.shape)
+        self.alfa = self.alfa.to(device)
 
         a = (base*(base-1))**(-1)
         self.qa = torch.Tensor([a * q for q in range(output_size)])
+        self.qa = self.qa.to(device)
 
         self.spline = BSplineActivation(num_activations=input_size, 
                                         grid = grid_size, 
