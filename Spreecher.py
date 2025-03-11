@@ -27,6 +27,8 @@ class Spreecher(nn.Module):
         self.qa = torch.Tensor([a * q for q in range(output_size)])
         self.qa = self.qa.to(device)
 
+        self.device = device
+
         self.spline = BSplineActivation(num_activations=input_size, 
                                         grid = grid_size, 
                                         mode="linear", 
@@ -37,10 +39,10 @@ class Spreecher(nn.Module):
         batch, input_size = X.shape
         output_size = self.qa.shape[0]
 
-        X = X.reshape((batch, 1, input_size)) * torch.ones((output_size, input_size))
+        X = X.reshape((batch, 1, input_size)) * torch.ones((output_size, input_size)).to(self.device)
         X = rearrange(X, "b o i -> b i o")
 
-        qa = torch.ones((batch, input_size, output_size)) * self.qa
+        qa = torch.ones((batch, input_size, output_size)).to(self.device) * self.qa
 
         y = torch.einsum("b i o -> b o", self.alfa * self.spline(X+qa))
 
