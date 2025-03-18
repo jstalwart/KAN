@@ -10,6 +10,8 @@ class KAN_layer(nn.Module):
                device: str = None,
                **kwargs):
     super().__init__()
+    if grid_size % 2 == 0:
+        grid_size += 1
     self.in_features = in_features
     self.out_features = out_features
     # SiLU:
@@ -17,7 +19,7 @@ class KAN_layer(nn.Module):
     # Functions
     if device is None:
       device = "cuda" if torch.cuda.is_available() else "cpu"
-    self.edges = nn.ModuleList([BSplineActivation(num_activations=1, grid = grid_size, mode="linear", device=device) for i in range(out_features)])
+    self.edges = nn.ModuleList([BSplineActivation(num_activations=1, size = grid_size, mode="linear", device=device) for i in range(out_features)])
     # Weights
     self.linears = nn.ModuleList([nn.Linear(in_features = 2, out_features=1) for i in range(out_features)])
 
