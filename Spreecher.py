@@ -13,8 +13,11 @@ class Spreecher(nn.Module):
                  device = None,
                  **kwargs):
         super().__init__()
+        print("Grid size", grid_size)
         if device is None:
             device = "cuda" if torch.cuda.is_available() else "cpu"
+        if grid_size % 2 == 0:
+            grid_size += 1
 
 
         aux = torch.Tensor([1]+[torch.sum(torch.Tensor([base**(-(p-1)*(input_size**r-1)/(input_size-1)) for r in range(1, r_max)])) for p in range(2, input_size+1)])
@@ -30,7 +33,7 @@ class Spreecher(nn.Module):
         self.device = device
 
         self.spline = BSplineActivation(num_activations=input_size, 
-                                        grid = grid_size, 
+                                        size = grid_size, 
                                         mode="linear", 
                                         device=device)
 
